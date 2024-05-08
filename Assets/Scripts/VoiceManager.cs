@@ -1,3 +1,4 @@
+using Meta.WitAi.TTS.Utilities;
 using Oculus.Voice;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,6 +9,10 @@ public class VoiceManager : MonoBehaviour
 {
     [SerializeField] private AppVoiceExperience AppVoice;
     [SerializeField] private TextMeshProUGUI TranscriptText;
+    [SerializeField] private TextMeshProUGUI DebugText;
+
+    // text to voice real time translation.
+    [SerializeField] private TTSSpeaker TTSSpeaker;
 
 
     // a to open mic
@@ -21,6 +26,19 @@ public class VoiceManager : MonoBehaviour
         AppVoice.TranscriptionEvents.OnPartialTranscription.AddListener(UserVoiceInputPartial);
 
         //AppVoice.VoiceEvents.
+    }
+
+    public void OutputText(string[] text)
+    {
+        foreach(string s in text)
+        {
+            DebugText.text = s;
+        }
+    }
+
+    public void WrongOutput(string text)
+    {
+        DebugText.text = text;
     }
 
     void UserVoiceInput(string arg0)
