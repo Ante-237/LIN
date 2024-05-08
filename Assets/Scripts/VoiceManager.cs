@@ -1,4 +1,5 @@
 using Meta.WitAi.TTS.Utilities;
+using Oculus.Interaction;
 using Oculus.Voice;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,14 +16,18 @@ public class VoiceManager : MonoBehaviour
     [SerializeField] private List<GameObject> ObjectList = new List<GameObject>();
     [SerializeField] private List<string> hintString = new List<string>();
     [SerializeField] private Transform SpawnPoint;
+    [SerializeField] private GameObject CorrectPrefab;
+    [SerializeField] private GameObject WrongPrefab;
 
 
 
     private string RepeatText = "What do you see?";
+    private string wrongText = "Wrong response, try again.";
 
 
     // text to voice real time translation.
     [SerializeField] private TTSSpeaker TTSSpeaker;
+    [SerializeField] private TTSSpeaker WrongTextSpeaker;
 
 
     // a to open mic
@@ -48,7 +53,10 @@ public class VoiceManager : MonoBehaviour
 
     IEnumerator NextLevelSequence()
     {
+        AppVoice.Deactivate();
+        StartCoroutine(PopUpState(true));
         yield return new WaitForSeconds(StartTime);
+        ReapeatText();
         if(currentIndex < ObjectList.Count)
         {
             currentIndex++;
@@ -60,6 +68,7 @@ public class VoiceManager : MonoBehaviour
         }
     }
 
+    bool responseState = false;
 
 
     public void ResponseCheck(string[] arg)
@@ -71,40 +80,57 @@ public class VoiceManager : MonoBehaviour
                 if( currentIndex == 0)
                 {
                     StartCoroutine(NextLevelSequence());
+                    break;
                 }
             }
-
             else if(s == "object_camera")
             {
                 if (currentIndex == 1)
                 {
                     StartCoroutine(NextLevelSequence());
+                    break;
                 }
             }
-
             else if(s == "object_streetrat")
             {
                 if (currentIndex == 2)
                 {
                     StartCoroutine(NextLevelSequence());
+                    break;
                 }
             }
-
             else if(s == "woodenaxe")
             {
                 if (currentIndex == 3)
                 {
                     StartCoroutine(NextLevelSequence());
+                    break;
                 }
             }
             else
             {
                 // surely wrong output.
-                WrongResponseText();
-                TranscriptText.text = "<color=red>wrong response</color>";
+                responseState = true;
+            
             }
         }
+
+     
+            // WrongResponseText();
+            // TranscriptText.text = "<color=red>wrong response</color>";
+            // responseState = false;
+            // StartCoroutine(PopUpState(false));
     }
+
+    IEnumerator PopUpState(bool state)
+    {
+        CorrectPrefab.SetActive(state);
+        WrongPrefab.SetActive(!state);
+        yield return new WaitForSeconds(2.0f);
+        CorrectPrefab.SetActive(false);
+        WrongPrefab.SetActive(false) ; 
+    }
+
 
     IEnumerator InitCallBack()
     {
@@ -119,7 +145,7 @@ public class VoiceManager : MonoBehaviour
 
     private void WrongResponseText()
     {
-        TTSSpeaker.SpeakQueued("Wrong response");
+        WrongTextSpeaker.SpeakQueued(wrongText);
     }
 
     void UserVoiceInput(string arg0)
@@ -132,6 +158,7 @@ public class VoiceManager : MonoBehaviour
         if (OVRInput.GetDown(OVRInput.Button.One))
         {
             AppVoice.Activate();
+            TranscriptText.text = "Speak";
         }
 
         if (OVRInput.GetDown(OVRInput.Button.Two))
