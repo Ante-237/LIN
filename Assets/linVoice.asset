@@ -20,17 +20,38 @@ MonoBehaviour:
     isPrivate: 1
     createdAt: 2024-05-06T03:21:47-0700
     trainingStatus: 1
-    lastTrainDuration: 49
-    lastTrainedAt: 2024-05-06T10:43:56-0700
-    nextTrainAt: 2024-05-06T10:43:07-0700
+    lastTrainDuration: 59
+    lastTrainedAt: 2024-05-08T11:59:16-0700
+    nextTrainAt: 2024-05-08T11:58:17-0700
     intents:
     - id: 981578712996993
       name: first_response
       entities: []
+    - id: 477422104850694
+      name: object_camera
+      entities: []
+    - id: 1446667726222614
+      name: object_plunger
+      entities: []
+    - id: 1829457847523349
+      name: object_streetrat
+      entities: []
+    - id: 2762500167230904
+      name: object_woodenaxe
+      entities: []
     - id: 333953796078308
       name: park_response
       entities: []
-    entities: []
+    entities:
+    - name: main_plunger
+      id: 336860659099381
+      lookups:
+      - free-text
+      - keywords
+      roles:
+      - name: main_plunger
+        id: 347985728298343
+      keywords: []
     traits: []
     versionTags: []
     voices:
@@ -561,7 +582,7 @@ MonoBehaviour:
   - Oculus.Voice.Demo, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   - Meta.WitAi.Samples, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   relaxedResolution: 0
-  _lastRefreshSeconds: 1715021296.3088667
+  _lastRefreshSeconds: 1715196509.096324
 --- !u!114 &4752351430522084139
 MonoBehaviour:
   m_ObjectHideFlags: 0
